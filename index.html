@@ -1,0 +1,40 @@
+<!DOCTYPE html> 
+<html>
+<head>
+  <title>Javascript Breakout</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> 
+  <link href="breakout.css" media="screen, print" rel="stylesheet" type="text/css" /> 
+</head> 
+ 
+<body> 
+
+
+  <div id="breakout">
+    <canvas id="canvas">
+      <div class='unsupported'>
+        Sorry, this example cannot be run because your browser does not support the &lt;canvas&gt; element
+      </div>
+    </canvas>
+    <div id="levels">
+      <img id="next" class="disabled" src="images/up.png"   title="next level">
+      <img id="prev" class="disabled" src="images/down.png" title="previous level">
+      <span id="label">level:</span><span id="level"></span>
+    </div>
+    <div id="instructions">
+      <b>space</b> to launch ball<br>
+      <b>left/right</b> to move paddle<br>
+      <b>up/down</b> to change level
+    </div>
+  </div>
+
+  <script src="game.js"     type="text/javascript"></script>
+  <script src="breakout.js" type="text/javascript"></script>
+  <script src="levels.js"   type="text/javascript"></script>
+  <script type="text/javascript">
+  Game.ready(function() {
+    var game = Game.start('canvas', Breakout);
+  });
+  </script>
+
+</body> 
+</html>
