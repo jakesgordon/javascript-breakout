@@ -262,8 +262,9 @@ Breakout = {
       ctx.fillText(text, this.width - width, this.height/2);
 
       paddle = {
-        w: this.game.court.chunk * 1.5,
-        h: this.game.court.chunk * 2/3
+        game: this.game,
+        w:    this.game.court.chunk * 1.5,
+        h:    this.game.court.chunk * 2/3
       }
       ctx.translate(this.scorewidth + 20, (this.height-paddle.h) / 2);
       for(var n = 0 ; n < this.lives ; n++) {
@@ -544,8 +545,6 @@ Breakout = {
       this.speed  = this.cfg.speed  * this.game.court.chunk;
       this.w      = this.cfg.width  * this.game.court.chunk;
       this.h      = this.cfg.height * this.game.court.chunk;
-      this.color  = this.game.color.paddle;
-      this.border = this.game.color.border;
       this.minX   = this.game.court.left;
       this.maxX   = this.game.court.right - this.w;
       this.setpos(Game.random(this.minX, this.maxX), this.game.court.bottom - this.h);
@@ -589,7 +588,7 @@ Breakout = {
       var r = this.h/2;
 
       ctx.fillStyle = gradient;
-      ctx.strokeStyle = this.border;
+      ctx.strokeStyle = this.game.color.border;
       ctx.beginPath();
       ctx.moveTo(r,  0);
       ctx.lineTo(this.w - r, 0);
