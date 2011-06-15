@@ -263,6 +263,23 @@ Game = {
     }
   },
 
+  loadScript: function(src, cb) {
+    var head = document.getElementsByTagName('head')[0];
+    var s = document.createElement('script');
+    head.appendChild(s);
+    if (Game.ua.isIE) {
+      s.onreadystatechange = function(e) {
+        if (e.currentTarget.readyState == 'loaded')
+          cb(e.currentTarget);
+      }
+    }
+    else {
+      s.onload = function(e) { cb(e.currentTarget); }
+    }
+    s.type = 'text/javascript';
+    s.src = src;
+  },
+
   loadImages: function(sources, callback) { /* load multiple images and callback when ALL have finished loading */
     var images = {};
     var count = sources ? sources.length : 0;
@@ -277,6 +294,34 @@ Game = {
         Game.addEvent(image, 'load', function() { if (--count == 0) callback(images); });
         image.src = source;
       }
+    }
+  },
+
+  loadSounds: function(cfg) {
+    cfg = cfg || {};
+    if (typeof soundManager == 'undefined') {
+      var path = cfg.path || 'sound/soundmanager2-nodebug-jsmin.js';
+      var swf  = cfg.swf  || 'sound/swf';
+      window.SM2_DEFER = true;
+      Game.loadScript(path, function() {
+        window.soundManager = new SoundManager();
+        soundManager.useHighPerformance = true;
+        soundManager.useFastPolling = true;
+        soundManager.url = swf;
+        soundManager.defaultOptions.volume = 5; // shhh!
+        soundManager.onready(function() {
+          Game.loadSounds(cfg);
+        });
+        soundManager.beginDelayedInit();
+      });
+    }
+    else {
+      var sounds = [];
+      for(var id in cfg.sounds) {
+        sounds.push(soundManager.createSound({id: id, url: cfg.sounds[id]}));
+      }
+      if (cfg.onload)
+        cfg.onload(sounds);
     }
   },
 

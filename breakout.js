@@ -62,7 +62,12 @@ Breakout = {
       { key:  Game.KEY.ESC,                      state: 'game', action: function() { this.abandon();                  } },
       { key:  Game.KEY.UP,                       state: 'menu', action: function() { this.nextLevel();                } },
       { key:  Game.KEY.DOWN,                     state: 'menu', action: function() { this.prevLevel();                } }
-    ]
+    ],
+
+    sounds: {
+      brick:  '/sound/breakout/brick.mp3',
+      paddle: '/sound/breakout/paddle.mp3'
+    }
 
   },
 
@@ -79,6 +84,7 @@ Breakout = {
     this.paddle  = Object.construct(Breakout.Paddle, this, cfg.paddle);
     this.ball    = Object.construct(Breakout.Ball,   this, cfg.ball);
     this.score   = Object.construct(Breakout.Score,  this, cfg.score);
+    Game.loadSounds({sounds: cfg.sounds});
   },
 
   onstartup: function() { // the event that fires the initial state transition occurs when Game.Runner constructs our StateMachine
@@ -155,6 +161,7 @@ Breakout = {
   },
 
   hitBrick: function(brick) {
+    this.playSound('brick');
     this.court.remove(brick);
     this.score.increase(brick.score);
     this.ball.speed += 10 * (1 - (this.ball.speed / this.ball.maxspeed)); // decay curve - speed increases less the faster the ball is (otherwise game becomes impossible)
@@ -190,6 +197,11 @@ Breakout = {
     $('level').update(this.level + 1);
   },
 
+  playSound: function(id) {
+    if (soundManager) {
+      soundManager.play(id);
+    }
+  },
 
   //=============================================================================
 
@@ -492,6 +504,7 @@ Breakout = {
 
         if ((closest.item == this.game.paddle) && (closest.point.d == 'top')) {
           p2.dx = this.speed * (closest.point.x - (this.game.paddle.left + this.game.paddle.w/2)) / (this.game.paddle.w/2);
+          this.game.playSound('paddle');
         }
 
         this.setpos(closest.point.x, closest.point.y);
