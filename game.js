@@ -253,16 +253,6 @@ Game = {
     return canvas;
   },
 
-  createAudio: function(src) {
-    try {
-      var a = new Audio(src);
-      a.volume = 0.1; // lets be real quiet please
-      return a;
-    } catch (e) {
-      return null;
-    }
-  },
-
   loadScript: function(src, cb) {
     var head = document.getElementsByTagName('head')[0];
     var s = document.createElement('script');
@@ -308,7 +298,7 @@ Game = {
         soundManager.useHighPerformance = true;
         soundManager.useFastPolling = true;
         soundManager.url = swf;
-        soundManager.defaultOptions.volume = 5; // shhh!
+        soundManager.defaultOptions.volume = 50; // shhh!
         soundManager.onready(function() {
           Game.loadSounds(cfg);
         });

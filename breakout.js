@@ -65,8 +65,12 @@ Breakout = {
     ],
 
     sounds: {
-      brick:  '/sound/breakout/brick.mp3',
-      paddle: '/sound/breakout/paddle.mp3'
+      brick:    '/sound/breakout/brick.mp3',
+      paddle:   '/sound/breakout/paddle.mp3',
+      go:       '/sound/breakout/go.mp3',
+      levelup:  '/sound/breakout/levelup.mp3',
+      loselife: '/sound/breakout/loselife.mp3',
+      gameover: '/sound/breakout/gameover.mp3'
     }
 
   },
@@ -131,10 +135,15 @@ Breakout = {
     this.refreshDOM();
   },
 
-  ongame: function(delay) {
+  ongame: function() {
+    this.playSound('go');
     this.refreshDOM();
     this.score.reset();
-    this.ball.reset({launch: true, delay: delay});
+    this.ball.reset({launch: true});
+  },
+
+  onlose: function() {
+    this.playSound('gameover');
   },
 
   onleavegame: function() {
@@ -147,6 +156,7 @@ Breakout = {
   },
 
   loseBall: function() {
+    this.playSound('loselife');
     if (this.score.loseLife())
       this.lose();
     else {
@@ -155,6 +165,7 @@ Breakout = {
   },
 
   winLevel: function() {
+    this.playSound('levelup');
     this.score.gainLife();
     this.nextLevel(true);
     this.ball.reset({launch: true, delay: true});
