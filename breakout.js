@@ -84,6 +84,7 @@ Breakout = {
     this.height  = runner.height;
     this.storage = runner.storage();
     this.color   = cfg.color;
+    this.sound   = (this.storage.sound != "false");
     this.court   = Object.construct(Breakout.Court,  this, cfg.court);
     this.paddle  = Object.construct(Breakout.Paddle, this, cfg.paddle);
     this.ball    = Object.construct(Breakout.Ball,   this, cfg.ball);
@@ -97,8 +98,14 @@ Breakout = {
   },
 
   addEvents: function() {
-    Game.addEvent('prev', 'click', this.prevLevel.bind(this, false));
-    Game.addEvent('next', 'click', this.nextLevel.bind(this, false));
+    Game.addEvent('prev',  'click',  this.prevLevel.bind(this, false));
+    Game.addEvent('next',  'click',  this.nextLevel.bind(this, false));
+    Game.addEvent('sound', 'change', this.toggleSound.bind(this, false));
+
+  },
+
+  toggleSound: function() {
+    this.storage.sound = this.sound = !this.sound;
   },
 
   update: function(dt) {
@@ -206,10 +213,11 @@ Breakout = {
     $('prev').toggleClassName('disabled', !this.canPrevLevel());
     $('next').toggleClassName('disabled', !this.canNextLevel());
     $('level').update(this.level + 1);
+    $('sound').checked = this.sound;
   },
 
   playSound: function(id) {
-    if (soundManager) {
+    if (soundManager && this.sound) {
       soundManager.play(id);
     }
   },

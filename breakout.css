@@ -53,6 +53,14 @@ body {
 }
 #instructions b { color: black; }
 
+#controls {
+  position: absolute;
+    bottom: 0.5em;
+      left: 0.5em;
+}
+#controls input,
+#controls label { vertical-align: middle; }
+
 /********************************/
 /* re-usable class-based styles */
 /********************************/
