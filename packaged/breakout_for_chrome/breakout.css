@@ -54,6 +54,7 @@ body {
 #instructions b { color: black; }
 
 #controls {
+   display: none; /* sounds doesn't work in chrome app store, so hide controls */
   position: absolute;
     bottom: 0.5em;
       left: 0.5em;

@@ -1,7 +1,7 @@
 {
   "name": "Breakout",
   "description": "A 10 level, bricks and paddle, breakout style game.",
-  "version": "1.2",
+  "version": "1.3",
   "app": {
     "launch": {
       "local_path": "breakout.html"
