@@ -104,6 +104,10 @@ Breakout = {
     Game.addEvent('prev',  'click',  this.prevLevel.bind(this, false));
     Game.addEvent('next',  'click',  this.nextLevel.bind(this, false));
     Game.addEvent('sound', 'change', this.toggleSound.bind(this, false));
+
+    Game.addEvent('instructions',     'touchstart', this.play.bind(this));
+    Game.addEvent(this.runner.canvas, 'touchmove',  this.ontouchmove.bind(this));
+    Game.addEvent(document.body,      'touchmove',  function(event) { event.preventDefault(); }); // prevent ipad bouncing up and down when finger scrolled
   },
 
   toggleSound: function() {
@@ -223,21 +227,11 @@ Breakout = {
     }
   },
 
-  ontouchstart: function(ev) {
-    if (this.is('menu'))
-      this.play();
-  },
-
   ontouchmove: function(ev) {
-    if (event.targetTouches.length == 1) {
-      if (this.is('game')) {
-        var touch = event.targetTouches[0];
-        this.paddle.place(touch.clientX - this.court.left);
-      }
+    if (ev.targetTouches.length == 1) {
+      var touch = ev.targetTouches[0];
+      this.paddle.place(touch.clientX - this.court.left);
     }
-  },
-
-  ontouchend: function(ev) {
   },
 
   //=============================================================================

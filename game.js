@@ -588,14 +588,9 @@ Game = {
     },
 
     addEvents: function() {
-      Game.addEvent(document,    'keydown',    this.onkeydown.bind(this));
-      Game.addEvent(document,    'keyup',      this.onkeyup.bind(this));
-      Game.addEvent(window,      'resize',     this.onresize.bind(this));
-      Game.addEvent(this.canvas, 'touchstart', this.ontouchstart.bind(this));
-      Game.addEvent(this.canvas, 'touchmove',  this.ontouchmove.bind(this));
-      Game.addEvent(this.canvas, 'touchend',   this.ontouchend.bind(this));
-
-      Game.addEvent(document.body, 'touchmove', function(event) { event.preventDefault(); });
+      Game.addEvent(document, 'keydown', this.onkeydown.bind(this));
+      Game.addEvent(document, 'keyup',   this.onkeyup.bind(this));
+      Game.addEvent(window,   'resize',  this.onresize.bind(this));
     },
 
     onresize: function() {
@@ -619,21 +614,6 @@ Game = {
           this.game.onresize(this.width, this.height);
         this.initCanvas(); // when canvas is really resized, its state is reset so we need to re-initialize
       }
-    },
-
-    ontouchstart: function(ev) {
-      if (this.game.ontouchstart)
-        return this.game.ontouchstart(ev);
-    },
-
-    ontouchmove: function(ev) {
-      if (this.game.ontouchmove)
-        return this.game.ontouchmove(ev);
-    },
-
-    ontouchend: function(ev) {
-      if (this.game.ontouchend)
-        return this.game.ontouchend(ev);
     },
 
     onkeydown: function(ev) {
