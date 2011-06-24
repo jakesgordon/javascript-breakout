@@ -11,7 +11,3 @@ Another HTML5 experiment to implement BREAKOUT in a `<canvas>`
    * [Gameplay Balance](http://codeincomplete.com/posts/2011/6/13/gameplay_in_breakout/)
    * [Adding Sound](http://codeincomplete.com/posts/2011/6/16/adding_sound_to_breakout/)
 
-TODO
-====
- * switch back to html5 audio for sound
-
