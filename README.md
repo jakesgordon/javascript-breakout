@@ -13,6 +13,5 @@ Another HTML5 experiment to implement BREAKOUT in a `<canvas>`
 
 TODO
 ====
- * switch instructions for touch devices
  * switch back to html5 audio for sound
 

@@ -230,7 +230,8 @@ Game = {
       isOpera:   (key == "opera"),
       isIE:      (key == "ie"),
       hasCanvas: (document.createElement('canvas').getContext),
-      hasAudio:  (typeof(Audio) != 'undefined')
+      hasAudio:  (typeof(Audio) != 'undefined'),
+      hasTouch:  ('ontouchstart' in window)
     }
   }(),
 

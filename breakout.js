@@ -214,6 +214,7 @@ Breakout = {
   },
 
   refreshDOM: function() {
+    $('instructions').className = Game.ua.hasTouch ? 'touch' : 'keyboard';
     $('instructions').showIf(this.is('menu'));
     $('prev').toggleClassName('disabled', !this.canPrevLevel());
     $('next').toggleClassName('disabled', !this.canNextLevel());
