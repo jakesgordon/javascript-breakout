@@ -502,6 +502,7 @@ Game = {
       this.fps          = this.cfg.fps || 60;
       this.interval     = 1000.0 / this.fps;
       this.canvas       = $(id);
+      this.bounds       = this.canvas.getBoundingClientRect();
       this.width        = this.cfg.width  || this.canvas.offsetWidth;
       this.height       = this.cfg.height || this.canvas.offsetHeight;
       this.front        = this.canvas;
