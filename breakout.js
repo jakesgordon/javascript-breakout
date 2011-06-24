@@ -7,7 +7,7 @@ Breakout = {
   Defaults: {
 
     fps: 60,
-    stats: true,
+    stats: false,
 
     score: {
       lives: {
@@ -62,7 +62,6 @@ Breakout = {
       { keys: [Game.KEY.LEFT,  Game.KEY.A],                     action: function() { this.paddle.stopMovingLeft();    } },
       { keys: [Game.KEY.RIGHT, Game.KEY.D],                     action: function() { this.paddle.stopMovingRight();   } },
       { keys: [Game.KEY.SPACE, Game.KEY.RETURN], state: 'menu', action: function() { this.play();                     } },
-      { keys: [Game.KEY.SPACE, Game.KEY.RETURN], state: 'game', action: function() { this.ball.launch();              } },
       { key:  Game.KEY.ESC,                      state: 'game', action: function() { this.abandon();                  } },
       { key:  Game.KEY.UP,                       state: 'menu', action: function() { this.nextLevel();                } },
       { key:  Game.KEY.DOWN,                     state: 'menu', action: function() { this.prevLevel();                } }
@@ -458,7 +457,7 @@ Breakout = {
     reset: function(options) {
       this.radius   = this.cfg.radius * this.game.court.chunk;
       this.speed    = this.cfg.speed  * this.game.court.chunk;
-      this.maxspeed = this.speed * 2;
+      this.maxspeed = this.speed * 1.5;
       this.color    = this.game.color.ball;
       this.moveToPaddle();
       this.setdir(0, 0);
