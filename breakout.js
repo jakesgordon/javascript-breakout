@@ -24,7 +24,11 @@ Breakout = {
     ball: {
       radius:  0.3,
       speed:   15,
-      delay:   4000 // ms before ball launches from paddle
+      labels: {
+        3: { text: 'ready...', fill: '#D82800', stroke: 'black', font: 'bold 28pt arial' },
+        2: { text: 'set..',    fill: '#FC9838', stroke: 'black', font: 'bold 28pt arial' },
+        1: { text: 'go!',      fill: '#80D010', stroke: 'black', font: 'bold 28pt arial' }
+      }
     },
 
     paddle: {
@@ -101,7 +105,6 @@ Breakout = {
     Game.addEvent('prev',  'click',  this.prevLevel.bind(this, false));
     Game.addEvent('next',  'click',  this.nextLevel.bind(this, false));
     Game.addEvent('sound', 'change', this.toggleSound.bind(this, false));
-
   },
 
   toggleSound: function() {
@@ -143,7 +146,6 @@ Breakout = {
   },
 
   ongame: function() {
-    this.playSound('go');
     this.refreshDOM();
     this.score.reset();
     this.ball.reset({launch: true});
@@ -167,7 +169,7 @@ Breakout = {
     if (this.score.loseLife())
       this.lose();
     else {
-      this.ball.reset({launch: true, delay: true});
+      this.ball.reset({launch: true});
     }
   },
 
@@ -175,7 +177,7 @@ Breakout = {
     this.playSound('levelup');
     this.score.gainLife();
     this.nextLevel(true);
-    this.ball.reset({launch: true, delay: true});
+    this.ball.reset({launch: true});
   },
 
   hitBrick: function(brick) {
@@ -220,6 +222,23 @@ Breakout = {
     if (soundManager && this.sound) {
       soundManager.play(id);
     }
+  },
+
+  ontouchstart: function(ev) {
+    if (this.is('menu'))
+      this.play();
+  },
+
+  ontouchmove: function(ev) {
+    if (event.targetTouches.length == 1) {
+      if (this.is('game')) {
+        var touch = event.targetTouches[0];
+        this.paddle.place(touch.clientX - this.court.left);
+      }
+    }
+  },
+
+  ontouchend: function(ev) {
   },
 
   //=============================================================================
@@ -443,7 +462,7 @@ Breakout = {
       this.color    = this.game.color.ball;
       this.moveToPaddle();
       this.setdir(0, 0);
-      this.clearDelayedLaunch();
+      this.clearLaunch();
       this.hitTargets = [
         this.game.paddle,
         this.game.court.wall.top,
@@ -451,7 +470,7 @@ Breakout = {
         this.game.court.wall.right,
       ].concat(this.game.court.bricks);
       if (options && options.launch)
-        this.launch(options.delay);
+        this.launch();
     },
 
     moveToPaddle: function() {
@@ -471,24 +490,41 @@ Breakout = {
       this.moving = dir.m != 0;
     },
 
-    launch: function(delay) {
-      if (!this.moving) {
-        if (delay) {
-          this.delayLaunch();
+    launch: function() {
+      if (!this.moving || this.countdown) {
+        this.countdown = (typeof this.countdown == 'undefined') || (this.countdown == null) ? 3 : this.countdown - 1;
+        if (this.countdown > 0) {
+          this.label = this.launchLabel(this.countdown);
+          this.delayTimer = setTimeout(this.launch.bind(this), 1000);
+          if (this.countdown == 1)
+            this.setdir(1, -1); // launch on 'go'
         }
         else {
-          this.clearDelayedLaunch();
-          this.setdir(1, -2);
+          this.clearLaunch();
         }
       }
     },
 
-    delayLaunch: function() {
-      this.delaytimer = setTimeout(this.launch.bind(this, false), this.cfg.delay);
+    launchLabel: function(count) {
+      var label       = this.cfg.labels[count];
+      var ctx         = this.game.runner.front2d; // dodgy getting the context this way, should probably have a Game.Runner.ctx() method ?
+      ctx.save();
+      ctx.font        = label.font;
+      ctx.fillStyle   = label.fill;
+      ctx.strokeStyle = label.stroke;
+      ctx.lineWidth   = 0.5;
+      var width       = ctx.measureText(label.text).width;
+      ctx.restore();
+      label.x         = this.game.court.left +   (this.game.court.width - width)/2;
+      label.y         = this.game.paddle.top - 60;
+      return label;
     },
 
-    clearDelayedLaunch: function() {
-      clearTimeout(this.delaytimer);
+    clearLaunch: function() {
+      if (this.delayTimer) {
+        clearTimeout(this.delayTimer);
+        this.delayTimer = this.label = this.countdown = null;
+      }
     },
 
     update: function(dt) {
@@ -559,8 +595,17 @@ Breakout = {
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.radius, 0, Game.THREESIXTY, true);
       ctx.fill();
-      ctx.stroke()  ;
+      ctx.stroke();
       ctx.closePath();
+
+      if (this.label) {
+        ctx.font = this.label.font;
+        ctx.fillStyle = this.label.fill;
+        ctx.strokeStyle = this.label.stroke;
+        ctx.lineWidth = 0.5;
+        ctx.fillText(this.label.text,   this.label.x, this.label.y);
+        ctx.strokeText(this.label.text, this.label.x, this.label.y);
+      }
     }
 
   },
@@ -595,11 +640,14 @@ Breakout = {
       this.dright = (dx > 0 ?  dx : 0);
     },
 
+    place: function(x) {
+      this.setpos(Math.min(this.maxX, Math.max(this.minX, x)), this.y);
+    },
+
     update: function(dt) {
       var amount = this.dright - this.dleft;
-      if (amount != 0) {
-        this.setpos(Math.min(this.maxX, Math.max(this.minX, this.x + (amount * dt * this.speed))), this.y);
-      }
+      if (amount != 0)
+        this.place(this.x + (amount * dt * this.speed));
     },
 
     draw: function(ctx) {

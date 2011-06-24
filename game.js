@@ -588,9 +588,14 @@ Game = {
     },
 
     addEvents: function() {
-      Game.addEvent(document, 'keydown', this.onkeydown.bind(this));
-      Game.addEvent(document, 'keyup',   this.onkeyup.bind(this));
-      Game.addEvent(window,   'resize',  this.onresize.bind(this));
+      Game.addEvent(document,    'keydown',    this.onkeydown.bind(this));
+      Game.addEvent(document,    'keyup',      this.onkeyup.bind(this));
+      Game.addEvent(window,      'resize',     this.onresize.bind(this));
+      Game.addEvent(this.canvas, 'touchstart', this.ontouchstart.bind(this));
+      Game.addEvent(this.canvas, 'touchmove',  this.ontouchmove.bind(this));
+      Game.addEvent(this.canvas, 'touchend',   this.ontouchend.bind(this));
+
+      Game.addEvent(document.body, 'touchmove', function(event) { event.preventDefault(); });
     },
 
     onresize: function() {
@@ -616,6 +621,21 @@ Game = {
       }
     },
 
+    ontouchstart: function(ev) {
+      if (this.game.ontouchstart)
+        return this.game.ontouchstart(ev);
+    },
+
+    ontouchmove: function(ev) {
+      if (this.game.ontouchmove)
+        return this.game.ontouchmove(ev);
+    },
+
+    ontouchend: function(ev) {
+      if (this.game.ontouchend)
+        return this.game.ontouchend(ev);
+    },
+
     onkeydown: function(ev) {
       if (this.game.onkeydown)
         return this.game.onkeydown(ev.keyCode);
@@ -631,12 +651,12 @@ Game = {
     },
 
     onkey: function(keyCode, mode) {
-      var n, k, i;
+      var n, k, i, state = this.game.current; // avoid same key event triggering in 2 different states by remembering current state so that even if an earlier keyhandler changes state, the later keyhandler wont kick in.
       for(n = 0 ; n < this.cfg.keys.length ; n++) {
         k = this.cfg.keys[n];
         k.mode = k.mode || 'up';
         if ((k.key == keyCode) || (k.keys && (k.keys.indexOf(keyCode) >= 0))) {
-          if (!k.state || this.game.is(k.state)) {
+          if (!k.state || (k.state == state)) {
             if (k.mode == mode) {
               k.action.call(this.game);
             }
