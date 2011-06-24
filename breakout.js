@@ -88,7 +88,7 @@ Breakout = {
     this.height  = runner.height;
     this.storage = runner.storage();
     this.color   = cfg.color;
-    this.sound   = this.storage.sound;
+    this.sound   = (this.storage.sound == "true");
     this.court   = Object.construct(Breakout.Court,  this, cfg.court);
     this.paddle  = Object.construct(Breakout.Paddle, this, cfg.paddle);
     this.ball    = Object.construct(Breakout.Ball,   this, cfg.ball);
