@@ -53,6 +53,11 @@ body {
 }
 #instructions b { color: black; }
 
+#instructions       .keyboard { display: block; }
+#instructions       .touch    { display: none;  }
+#instructions.touch .keyboard { display: none;  }
+#instructions.touch .touch    { display: block; }
+
 #controls {
    display: none; /* sounds doesn't work in chrome app store, so hide controls */
   position: absolute;
@@ -96,5 +101,3 @@ body {
   #canvas       { width: 1024px; height: 768px; }
   #instructions { font-size: 11pt; }
 }
-
-

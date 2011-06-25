@@ -24,7 +24,11 @@ Breakout = {
     ball: {
       radius:  0.3,
       speed:   15,
-      delay:   4000 // ms before ball launches from paddle
+      labels: {
+        3: { text: 'ready...', fill: '#D82800', stroke: 'black', font: 'bold 28pt arial' },
+        2: { text: 'set..',    fill: '#FC9838', stroke: 'black', font: 'bold 28pt arial' },
+        1: { text: 'go!',      fill: '#80D010', stroke: 'black', font: 'bold 28pt arial' }
+      }
     },
 
     paddle: {
@@ -58,19 +62,19 @@ Breakout = {
       { keys: [Game.KEY.LEFT,  Game.KEY.A],                     action: function() { this.paddle.stopMovingLeft();    } },
       { keys: [Game.KEY.RIGHT, Game.KEY.D],                     action: function() { this.paddle.stopMovingRight();   } },
       { keys: [Game.KEY.SPACE, Game.KEY.RETURN], state: 'menu', action: function() { this.play();                     } },
-      { keys: [Game.KEY.SPACE, Game.KEY.RETURN], state: 'game', action: function() { this.ball.launch();              } },
+      { keys: [Game.KEY.SPACE, Game.KEY.RETURN], state: 'game', action: function() { this.ball.launchNow();           } },
       { key:  Game.KEY.ESC,                      state: 'game', action: function() { this.abandon();                  } },
       { key:  Game.KEY.UP,                       state: 'menu', action: function() { this.nextLevel();                } },
       { key:  Game.KEY.DOWN,                     state: 'menu', action: function() { this.prevLevel();                } }
     ],
 
     sounds: {
-      brick:    'sound/breakout/brick.mp3',
-      paddle:   'sound/breakout/paddle.mp3',
-      go:       'sound/breakout/go.mp3',
-      levelup:  'sound/breakout/levelup.mp3',
-      loselife: 'sound/breakout/loselife.mp3',
-      gameover: 'sound/breakout/gameover.mp3'
+      brick:    '/sound/breakout/brick.mp3',
+      paddle:   '/sound/breakout/paddle.mp3',
+      go:       '/sound/breakout/go.mp3',
+      levelup:  '/sound/breakout/levelup.mp3',
+      loselife: '/sound/breakout/loselife.mp3',
+      gameover: '/sound/breakout/gameover.mp3'
     }
 
   },
@@ -84,7 +88,7 @@ Breakout = {
     this.height  = runner.height;
     this.storage = runner.storage();
     this.color   = cfg.color;
-    this.sound   = (this.storage.sound != "false");
+    this.sound   = false;
     this.court   = Object.construct(Breakout.Court,  this, cfg.court);
     this.paddle  = Object.construct(Breakout.Paddle, this, cfg.paddle);
     this.ball    = Object.construct(Breakout.Ball,   this, cfg.ball);
@@ -102,6 +106,9 @@ Breakout = {
     Game.addEvent('next',  'click',  this.nextLevel.bind(this, false));
     Game.addEvent('sound', 'change', this.toggleSound.bind(this, false));
 
+    Game.addEvent('instructions',     'touchstart', this.play.bind(this));
+    Game.addEvent(this.runner.canvas, 'touchmove',  this.ontouchmove.bind(this));
+    Game.addEvent(document.body,      'touchmove',  function(event) { event.preventDefault(); }); // prevent ipad bouncing up and down when finger scrolled
   },
 
   toggleSound: function() {
@@ -143,7 +150,6 @@ Breakout = {
   },
 
   ongame: function() {
-    this.playSound('go');
     this.refreshDOM();
     this.score.reset();
     this.ball.reset({launch: true});
@@ -167,7 +173,7 @@ Breakout = {
     if (this.score.loseLife())
       this.lose();
     else {
-      this.ball.reset({launch: true, delay: true});
+      this.ball.reset({launch: true});
     }
   },
 
@@ -175,7 +181,7 @@ Breakout = {
     this.playSound('levelup');
     this.score.gainLife();
     this.nextLevel(true);
-    this.ball.reset({launch: true, delay: true});
+    this.ball.reset({launch: true});
   },
 
   hitBrick: function(brick) {
@@ -209,6 +215,7 @@ Breakout = {
   },
 
   refreshDOM: function() {
+    $('instructions').className = Game.ua.hasTouch ? 'touch' : 'keyboard';
     $('instructions').showIf(this.is('menu'));
     $('prev').toggleClassName('disabled', !this.canPrevLevel());
     $('next').toggleClassName('disabled', !this.canNextLevel());
@@ -219,6 +226,12 @@ Breakout = {
   playSound: function(id) {
     if (soundManager && this.sound) {
       soundManager.play(id);
+    }
+  },
+
+  ontouchmove: function(ev) {
+    if (ev.targetTouches.length == 1) {
+      this.paddle.place(ev.targetTouches[0].pageX - this.runner.bounds.left - this.paddle.w/2); // clientX only works in ios, not on android - must use pageX - yuck
     }
   },
 
@@ -439,11 +452,11 @@ Breakout = {
     reset: function(options) {
       this.radius   = this.cfg.radius * this.game.court.chunk;
       this.speed    = this.cfg.speed  * this.game.court.chunk;
-      this.maxspeed = this.speed * 2;
+      this.maxspeed = this.speed * 1.5;
       this.color    = this.game.color.ball;
       this.moveToPaddle();
       this.setdir(0, 0);
-      this.clearDelayedLaunch();
+      this.clearLaunch();
       this.hitTargets = [
         this.game.paddle,
         this.game.court.wall.top,
@@ -451,7 +464,7 @@ Breakout = {
         this.game.court.wall.right,
       ].concat(this.game.court.bricks);
       if (options && options.launch)
-        this.launch(options.delay);
+        this.launch();
     },
 
     moveToPaddle: function() {
@@ -471,24 +484,48 @@ Breakout = {
       this.moving = dir.m != 0;
     },
 
-    launch: function(delay) {
-      if (!this.moving) {
-        if (delay) {
-          this.delayLaunch();
+    launch: function() {
+      if (!this.moving || this.countdown) {
+        this.countdown = (typeof this.countdown == 'undefined') || (this.countdown == null) ? 3 : this.countdown - 1;
+        if (this.countdown > 0) {
+          this.label = this.launchLabel(this.countdown);
+          this.delayTimer = setTimeout(this.launch.bind(this), 1000);
+          if (this.countdown == 1)
+            this.setdir(1, -1); // launch on 'go'
         }
         else {
-          this.clearDelayedLaunch();
-          this.setdir(1, -2);
+          this.clearLaunch();
         }
       }
     },
 
-    delayLaunch: function() {
-      this.delaytimer = setTimeout(this.launch.bind(this, false), this.cfg.delay);
+    launchNow: function() { // <space> key can override countdown launch
+      if (!this.moving) {
+        this.clearLaunch();
+        this.setdir(1, -1);
+      }
     },
 
-    clearDelayedLaunch: function() {
-      clearTimeout(this.delaytimer);
+    launchLabel: function(count) {
+      var label       = this.cfg.labels[count];
+      var ctx         = this.game.runner.front2d; // dodgy getting the context this way, should probably have a Game.Runner.ctx() method ?
+      ctx.save();
+      ctx.font        = label.font;
+      ctx.fillStyle   = label.fill;
+      ctx.strokeStyle = label.stroke;
+      ctx.lineWidth   = 0.5;
+      var width       = ctx.measureText(label.text).width;
+      ctx.restore();
+      label.x         = this.game.court.left +   (this.game.court.width - width)/2;
+      label.y         = this.game.paddle.top - 60;
+      return label;
+    },
+
+    clearLaunch: function() {
+      if (this.delayTimer) {
+        clearTimeout(this.delayTimer);
+        this.delayTimer = this.label = this.countdown = null;
+      }
     },
 
     update: function(dt) {
@@ -559,8 +596,17 @@ Breakout = {
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.radius, 0, Game.THREESIXTY, true);
       ctx.fill();
-      ctx.stroke()  ;
+      ctx.stroke();
       ctx.closePath();
+
+      if (this.label) {
+        ctx.font = this.label.font;
+        ctx.fillStyle = this.label.fill;
+        ctx.strokeStyle = this.label.stroke;
+        ctx.lineWidth = 0.5;
+        ctx.fillText(this.label.text,   this.label.x, this.label.y);
+        ctx.strokeText(this.label.text, this.label.x, this.label.y);
+      }
     }
 
   },
@@ -595,11 +641,14 @@ Breakout = {
       this.dright = (dx > 0 ?  dx : 0);
     },
 
+    place: function(x) {
+      this.setpos(Math.min(this.maxX, Math.max(this.minX, x)), this.y);
+    },
+
     update: function(dt) {
       var amount = this.dright - this.dleft;
-      if (amount != 0) {
-        this.setpos(Math.min(this.maxX, Math.max(this.minX, this.x + (amount * dt * this.speed))), this.y);
-      }
+      if (amount != 0)
+        this.place(this.x + (amount * dt * this.speed));
     },
 
     draw: function(ctx) {

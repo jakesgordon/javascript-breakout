@@ -230,7 +230,8 @@ Game = {
       isOpera:   (key == "opera"),
       isIE:      (key == "ie"),
       hasCanvas: (document.createElement('canvas').getContext),
-      hasAudio:  (typeof(Audio) != 'undefined')
+      hasAudio:  (typeof(Audio) != 'undefined'),
+      hasTouch:  ('ontouchstart' in window)
     }
   }(),
 
@@ -501,6 +502,7 @@ Game = {
       this.fps          = this.cfg.fps || 60;
       this.interval     = 1000.0 / this.fps;
       this.canvas       = $(id);
+      this.bounds       = this.canvas.getBoundingClientRect();
       this.width        = this.cfg.width  || this.canvas.offsetWidth;
       this.height       = this.cfg.height || this.canvas.offsetHeight;
       this.front        = this.canvas;
@@ -631,12 +633,12 @@ Game = {
     },
 
     onkey: function(keyCode, mode) {
-      var n, k, i;
+      var n, k, i, state = this.game.current; // avoid same key event triggering in 2 different states by remembering current state so that even if an earlier keyhandler changes state, the later keyhandler wont kick in.
       for(n = 0 ; n < this.cfg.keys.length ; n++) {
         k = this.cfg.keys[n];
         k.mode = k.mode || 'up';
         if ((k.key == keyCode) || (k.keys && (k.keys.indexOf(keyCode) >= 0))) {
-          if (!k.state || this.game.is(k.state)) {
+          if (!k.state || (k.state == state)) {
             if (k.mode == mode) {
               k.action.call(this.game);
             }
