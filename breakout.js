@@ -231,7 +231,7 @@ Breakout = {
 
   ontouchmove: function(ev) {
     if (ev.targetTouches.length == 1) {
-      this.paddle.place(ev.targetTouches[0].pageX - this.runner.bounds.left); // clientX only works in ios, not on android - must use pageX - yuck
+      this.paddle.place(ev.targetTouches[0].pageX - this.runner.bounds.left - this.paddle.w/2); // clientX only works in ios, not on android - must use pageX - yuck
     }
   },
 
@@ -642,7 +642,7 @@ Breakout = {
     },
 
     place: function(x) {
-      this.setpos(Math.min(this.maxX, Math.max(this.minX, x - this.w/2)), this.y);
+      this.setpos(Math.min(this.maxX, Math.max(this.minX, x)), this.y);
     },
 
     update: function(dt) {
