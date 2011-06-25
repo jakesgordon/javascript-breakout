@@ -10,4 +10,4 @@ Another HTML5 experiment to implement BREAKOUT in a `<canvas>`
    * [Collision Detection](http://codeincomplete.com/posts/2011/6/12/collision_detection_in_breakout/)
    * [Gameplay Balance](http://codeincomplete.com/posts/2011/6/13/gameplay_in_breakout/)
    * [Adding Sound](http://codeincomplete.com/posts/2011/6/16/adding_sound_to_breakout/)
-
+   * [Touch Events](http://codeincomplete.com/posts/2011/6/24/adding_touch_to_breakout/)
