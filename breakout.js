@@ -475,6 +475,60 @@ Breakout = {
       this.x = x;
       this.y = y;
       Game.Math.bound(this);
+	// Paddle x position:
+	// this.game.paddle.x
+	// screwFactor is proportional to how far the paddle
+	// needs to reach to bound the ball, and how low the
+	// ball is.
+	dist_x = this.game.paddle.x - this.x;
+	dist_y = this.game.paddle.y - this.y;
+	if( (dist_y < 170) && (this.dy > 0) ) {
+	    this.speed = this.cfg.speed * this.game.court.chunk * 1.4;
+	}
+	else {
+	    this.speed = this.cfg.speed * this.game.court.chunk;
+	}
+	metric = Math.trunc( 1.0 * dist_x * dist_x / dist_y / 100 );
+	if( metric >=6 ) {
+	    this.game.paddle.screwFactor = 0.8;
+	} else if( metric >=5 ) {
+	    if( Math.random() > 0.7 ) {
+		this.game.paddle.screwFactor = 0.6;
+	    }
+	    else {
+		this.game.paddle.screwFactor = 1.0;
+	    }
+	} else if( metric >=4 ) {
+	    if( Math.random() > 0.7 ) {
+		this.game.paddle.screwFactor = 0.2;
+	    }
+	    else {
+		this.game.paddle.screwFactor = 1.0;
+	    }
+	} else if( metric >=3 ) {
+	    if( Math.random() > 0.7 ) {
+		this.game.paddle.screwFactor = 0.2;
+	    }
+	    else {
+		this.game.paddle.screwFactor = 1.0;
+	    }
+	} else if( metric >=2 ) {
+	    if( Math.random() > 0.2 ) {
+		this.game.paddle.screwFactor = 0.2;
+	    }
+	    else {
+		this.game.paddle.screwFactor = 1.0;
+	    }
+	} else if( metric >=1 ) {
+	    if( Math.random() > 0.7 ) {
+		this.game.paddle.screwFactor = 0.2;
+	    }
+	    else {
+		this.game.paddle.screwFactor = 1.0;
+	    }
+	} else {
+	    this.game.paddle.screwFactor = 1.0;
+	}
     },
 
     setdir: function(dx, dy) {
@@ -617,6 +671,7 @@ Breakout = {
     initialize: function(game, cfg) {
       this.game = game;
       this.cfg  = cfg;
+      this.screwFactor = 1.0;
     },
 
     reset: function() {
@@ -648,7 +703,7 @@ Breakout = {
     update: function(dt) {
       var amount = this.dright - this.dleft;
       if (amount != 0)
-        this.place(this.x + (amount * dt * this.speed));
+        this.place(this.x + (amount * dt * this.speed * this.screwFactor));
     },
 
     draw: function(ctx) {
