@@ -215,7 +215,8 @@ Breakout = {
   nextLevel:    function(force) { if (force || this.canNextLevel()) this.setLevel(this.level + 1);     },
   determineLevelName: function(level) { level ? this.setLevelName(Breakout.Levels[level].name) : 
     this.setLevelName(Breakout.Levels[this.storage.level].name) },
-  setLevelName: function(name) { this.Defaults.level.name = name },
+  setLevelName: function(name) { this.Defaults.level.name = name; this.setLevelLabel() },
+  setLevelLabel: function() { let element = document.getElementById('label'); element.innerHTML  = this.getLevelName(); console.log("made it"); },
   getLevelName: function() { return this.Defaults.level.name },
 
   initCanvas: function(ctx) { // called by Game.Runner whenever the canvas is reset (on init and on resize)
