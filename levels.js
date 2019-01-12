@@ -110,6 +110,34 @@ Breakout.Levels = [
       "       DDDDddddDDDDdddd       ",
       "       DDddddDDDDddddDD       ",
     ]
+  },
+
+  { colors: Breakout.Colors.hf,
+    name: "Galaga",
+    bricks: [
+      "     jJj    jJj    jJj        ",
+      "    jJjJj  jJjJj  jJjJj       ",
+      "    j   j  j   j  j   j       ",
+      "    j   j  j   j  j   j       ",
+      "                              ",
+      "   b  b  b  b  b  b  b  b     ",
+      "   bBbB  bBbB  bBbB  bBbB     ",
+      "    bB    bB    bB    bB      ",
+      "   bBbB  bBbB  bBbB  bBbB     ",
+      "   b  b  b  b  b  b  b  b     ",
+      "                              ",
+      "             jJ               ",
+      "             fF               ",
+      "    ik      jfFj      ki      ",
+      "  ifFfk     j  j     kfFfi    ",
+      "  kfFfFk    j  j    kfFfFk    ",
+      "   kfFf    g    g    fFfk     ",
+      "    kf    g gGgG g    fk      ",
+      "           g    g             ",
+      "         g  gGgG  g           ",
+      "          g      g            ",
+      "           gGgGgG             "
+    ]
   }
 
 ];
