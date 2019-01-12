@@ -27,7 +27,8 @@ Breakout.Colors = {
 
 Breakout.Levels = [
 
-  { colors: Breakout.Colors.hf,
+  {
+    colors: Breakout.Colors.hf,
     name: "Hack Forums by xadamxk",
     bricks: [
       "                              ",
@@ -55,7 +56,8 @@ Breakout.Levels = [
     ]
   },
 
-  { colors: Breakout.Colors.hf,
+  {
+    colors: Breakout.Colors.hf,
     name: "Raid boss Omni by xadamxk",
     bricks: [
       "",
@@ -84,7 +86,8 @@ Breakout.Levels = [
     ]
   },
 
-  { colors: Breakout.Colors.hf,
+  {
+    colors: Breakout.Colors.hf,
     name: "Galaga by xadamxk",
     bricks: [
       "     jJj    jJj    jJj        ",
@@ -113,7 +116,8 @@ Breakout.Levels = [
     ]
   },
 
-  { colors: Breakout.Colors.hf,
+  {
+    colors: Breakout.Colors.hf,
     name: "Hacker Man by James!",
     bricks: [
       "nNnNnNnNnNnNeEeEeEnNnNnNnNnNnN",
@@ -141,7 +145,8 @@ Breakout.Levels = [
     ]
   },
 
-  { colors: Breakout.Colors.hf,
+  {
+    colors: Breakout.Colors.hf,
     name: "Omniscient by Nightmare",
     bricks: [
       "         eEeEeEeEeEeEe        ",
@@ -166,6 +171,35 @@ Breakout.Levels = [
       "    eEoOoOoOoOoOoeEoOoe       ",
       "    eoOoOoeEeoOeoOoOoOe       ",
       "    eoOeEeEoOoeoOoOoOeE       "
+    ]
+  },
+
+  {
+    colors: Breakout.Colors.hf,
+    name: "Xerotic Bot DNA by Xerotic",
+    bricks: [
+      "",
+      "     dD                 dD    ",
+      "    dgGdDdDdDdDdDdDdDdDdbBd   ",
+      "   dgGgdhHhHhHhHhHhHhHhHdiId  ",
+      "   dgGgdhHhHhHhHhHhHhHhHdiId  ",
+      "   dgGgGdDdDdDdDdDdDdDdDiIid  ",
+      "   dgGgGd             iIiIid  ",
+      "   dgGgGgdDdDdDdDdDdDiIiIiId  ",
+      "   dgGgGgGgGdhHhHhHhHdiIiIid  ",
+      "    dgGgGgGgGdDdhHhHhdiIiId   ",
+      "     dgGgGgGgGgGdDdDdiIiId    ",
+      "      dDgGgGgGgGgGgGgdDdD     ",
+      "     dDidDdDdgGgGgGgGgGdD     ",
+      "    diIiIiIdhdDgGgGgGgGgGd    ",
+      "   diIiIiIbdDdDdDdgGgGgGgGd   ",
+      "  diIiIbBbB       dgGgGgGgGd  ",
+      "  diIiIdDdDdDdDdDdDdDdgGgGgd  ",
+      "  diIidhHhHhHhHhHhHhHhHgGgGd  ",
+      "  diIidhHhHhHhHhHhHhHhHgGgGd  ",
+      "  diIiIdDdDdDdDdDdDdDdDdgGgd  ",
+      "   diId                dgGd   ",
+      "    dD                  dD    "
     ]
   }
 
