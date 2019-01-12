@@ -10,11 +10,11 @@
     border 2px solid black
     cursor pointer
     color transparent
-    colours = #eee #00B500 #FF2121 #4d2f5d #333333 #1F1F1F #ffcc00 #0066ff #afaaaa #ed1c24 #00cc66 #99ccff #aa00ff #2D7E52 #9999FF
+    colours = #eee #00B500 #FF2121 #4d2f5d #333333 #1F1F1F #ffcc00 #0066ff #afaaaa #ed1c24 #00cc66 #99ccff #aa00ff #2D7E52 #9999FF #ffcd94
     for colour, i in colours
       &:nth-of-type({i+1})
         background-color colour
-#calendar
+#grid
   font-size 0
   margin 0 0 10px 0
   cursor crosshair

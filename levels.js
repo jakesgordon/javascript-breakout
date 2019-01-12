@@ -17,7 +17,8 @@ Breakout.Colors = {
     k: "#99ccff", // Staff blue
     l: "#aa00ff", // Bots purple
     m: "#2D7E52", // Vender green
-    n: "#9999FF" // Admin purple
+    n: "#9999FF", // Admin purple
+    o: "#ffcd94" // Skin tone
 
   }
 
@@ -31,22 +32,22 @@ Breakout.Levels = [
     bricks: [
       "                              ",
       "                              ",
-      "  cm  mc  cCcC   cC  cm  mc   ",
-      "  cm  mc cm  mc cmMc cmMmc    ",
-      "  cCcCcC cm  mc c    cCcC     ",
-      "  cmMmMc cCcCcC c    cCc      ",
-      "  cm  mc cmMmMc c    cmMc     ",
-      "  cm  mc cm  mc cmMc cm mc    ",
-      "  cm  mc cm  mc  cC  cm  mc   ",
+      "  cm  mc  cccc   cc  cm  mc   ",
+      "  cm  mc cm  mc cmmc cm mc    ",
+      "  cccCCC cm  mc c    cmmc     ",
+      "  cmMmMc cccCCC c    ccc      ",
+      "  cm  mc cmmMMc c    cmmc     ",
+      "  cm  mc cm  mc cmmc cm mc    ",
+      "  cm  mc cm  mc  cc  cm  mc   ",
       "                              ",
       "                              ",
-      " cCcC  cC  cCc c c  c c   cCc ",
+      " cCCC  cC  ccc c c  c c   ccc ",
       " c    c  c c c c c c c c c    ",
-      " cCc  c  c cC  c c c c c  cC  ",
+      " CCC  c  c cc  c c c c c  cc  ",
       " c    c  c c c c c c c c    c ",
       " c    c  c c c c c c c c c  c ",
-      " c     cC  c c cCc c c c  cC  ",
-      " mMmMmMmMmMmMmMmMmMmMmMmMmMmM ",
+      " c     CC  c c ccc c c c  cc  ",
+      " MMMMmmmmMMMMmmmmMMMMmmmmMMMM ",
       "                              ",
       "                              ",
       "                              ",

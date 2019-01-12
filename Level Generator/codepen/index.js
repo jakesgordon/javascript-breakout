@@ -52,7 +52,7 @@ function updateTemplates() {
     [],
     []
   ];
-  let columns = document.querySelectorAll("#calendar > ul > li");
+  let columns = document.querySelectorAll("#grid > ul > li");
   Array.prototype.forEach.call(columns, (col, x) => {
     let cells = col.querySelectorAll(".pixel");
     Array.prototype.forEach.call(cells, (cell, y) => {
@@ -60,14 +60,9 @@ function updateTemplates() {
       data[y][x] = brush;
     });
   });
-  updateGitHubBoard(data);
-  updateGitfiti(data);
+  updateLevelCode(data);
 }
-function updateGitHubBoard(data) {
-  document.getElementById("github-board").value =
-    data.map(row => '"' + row.join("")).join('",\n') + '"]';
-}
-function updateGitfiti(data) {
+function updateLevelCode(data) {
   let stringData = "[" + data.map(row => row.join()).join("],[") + "]";
   let arrayData = JSON.parse("[" + stringData + "]");
   convertDataArray(arrayData);
@@ -89,7 +84,7 @@ function convertDataArray(dataArray) {
       prevLetter = currentLetter;
     }
   }
-  document.getElementById("gitfiti").value = convertArrayToPretty(finalArray);
+  document.getElementById("levelcode").value = convertArrayToPretty(finalArray);
 }
 function convertArrayToPretty(array) {
   let tempString = "\"";
