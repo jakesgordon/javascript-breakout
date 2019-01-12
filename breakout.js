@@ -6,6 +6,10 @@ Breakout = {
 
   Defaults: {
 
+    level: {
+      name: ""
+    },
+
     fps: 60,
     stats: false,
 
@@ -25,9 +29,9 @@ Breakout = {
       radius:  0.3,
       speed:   15,
       labels: {
-        3: { text: 'ready...', fill: '#D82800', stroke: 'black', font: 'bold 28pt arial' },
-        2: { text: 'set..',    fill: '#FC9838', stroke: 'black', font: 'bold 28pt arial' },
-        1: { text: 'go!',      fill: '#80D010', stroke: 'black', font: 'bold 28pt arial' }
+        3: { text: 'ready...', fill: '#FF2121', stroke: 'black', font: 'bold 28pt arial' },
+        2: { text: 'set..',    fill: 'white', stroke: 'black', font: 'bold 28pt arial' },
+        1: { text: 'go!',      fill: '#00B500', stroke: 'black', font: 'bold 28pt arial' }
       }
     },
 
@@ -39,13 +43,13 @@ Breakout = {
 
     color: {
       background: 'rgba(200, 200, 200, 0.5)',
-      foreground: 'green',
+      foreground: 'white',
       border:     '#222',
       wall:       '#333',
-      ball:       'black',
-      paddle:     'rgb(245,111,37)',
+      ball:       'white',
+      paddle:     '#4d2f5d',
       score:      "#EFD279",
-      highscore:  "#AFD775"
+      highscore:  "#EFD279"
     },
 
     state: {
@@ -195,6 +199,9 @@ Breakout = {
 
   resetLevel: function() { this.setLevel(); },
   setLevel: function(level) {
+    // ADAM
+    this.determineLevelName(level);
+    console.log(this.getLevelName());
     level = (typeof level == 'undefined') ? (this.storage.level ? parseInt(this.storage.level) : 0) : level;
     level = level < Breakout.Levels.length ? level : 0;
     this.court.reset(level);
@@ -206,6 +213,10 @@ Breakout = {
   canNextLevel: function()      { return this.is('menu') && (this.level < (Breakout.Levels.length-1)); },
   prevLevel:    function(force) { if (force || this.canPrevLevel()) this.setLevel(this.level - 1);     },
   nextLevel:    function(force) { if (force || this.canNextLevel()) this.setLevel(this.level + 1);     },
+  determineLevelName: function(level) { level ? this.setLevelName(Breakout.Levels[level].name) : 
+    this.setLevelName(Breakout.Levels[this.storage.level].name) },
+  setLevelName: function(name) { this.Defaults.level.name = name },
+  getLevelName: function() { return this.Defaults.level.name },
 
   initCanvas: function(ctx) { // called by Game.Runner whenever the canvas is reset (on init and on resize)
     ctx.fillStyle    = this.color.foreground;
@@ -662,9 +673,9 @@ Breakout = {
     render: function(ctx) {
 
       var gradient = ctx.createLinearGradient(0, this.h, 0, 0);
-      gradient.addColorStop(0.36, 'rgb(245,111,37)');
-      gradient.addColorStop(0.68, 'rgb(255,145,63)');
-      gradient.addColorStop(0.84, 'rgb(255,174,95)');
+      gradient.addColorStop(0.36, this.game.color.paddle);
+      gradient.addColorStop(0.68, this.game.color.paddle);
+      gradient.addColorStop(0.84, this.game.color.paddle);
 
       var r = this.h/2;
 
