@@ -111,6 +111,34 @@ Breakout.Levels = [
       "          g      g            ",
       "           gGgGgG             "
     ]
+  },
+
+  { colors: Breakout.Colors.hf,
+    name: "Hacker Man by James!",
+    bricks: [
+      "nNnNnNnNnNnNeEeEeEnNnNnNnNnNnN",
+      "nNnNnNnNnNeEdDdDdDeEnNnNnNnNnN",
+      "nNnNnNnNnedDdDdDdDdDenNnNnNnNn",
+      "NnNnNnNnedDdDdDdDdDdDenNnNnNnN",
+      "nNnNnNnNedDdeEeEeEdDdenNnNnNnN",
+      "nNnNnNnNeEeEfFfFfFeEeEnNnNnNnN",
+      "nNnNnNnNeoOoOoOofFfFfenNnNnNnN",
+      "nNnNnNnNeoOoOoOoOofFfenNnNnNnN",
+      "nNnNnNnNneoOoOoOoOofenNnNnNnNn",
+      "NnNnNnNnNeoOoOoOoOofenNnNnNnNn",
+      "NnNnNnNneEoOoOoOoOofeEnNnNnNnN",
+      "nNnNnNnNeheoOoOoOfFehenNnNnNnN",
+      "nNnNnNnNeEheEoOofeEheEnNnNnNnN",
+      "nNnNnNnedDeEheEeEeEedDenNnNnNn",
+      "NnNnNnedDdDeEhHhHeEdDdDenNnNnN",
+      "nNnNnedDdDdDdehHedDdDdDdenNnNn",
+      "NnNnNedDdDdDdDeEdDdDdDdDenNnNn",
+      "NnNnedDdDdDdDdDdDdDdDdDdDenNnN",
+      "nNnNedDdDdDdDdDdDdDdDdDdDenNnN",
+      "nNnNedDdDdDdDdDdDdDdDdDdDenNnN",
+      "nNnNeEeEeEeEeEeEeEeEeEeEeEnNnN",
+      "                              "
+    ]
   }
 
 ];
