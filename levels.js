@@ -28,7 +28,7 @@ Breakout.Colors = {
 Breakout.Levels = [
 
   { colors: Breakout.Colors.hf,
-    name: "Hack Forums",
+    name: "Hack Forums by xadamxk",
     bricks: [
       "                              ",
       "                              ",
@@ -56,7 +56,7 @@ Breakout.Levels = [
   },
 
   { colors: Breakout.Colors.hf,
-    name: "Raid boss Omni",
+    name: "Raid boss Omni by xadamxk",
     bricks: [
       "",
       "        dDdDdDdDdDdDd         ",
@@ -85,7 +85,7 @@ Breakout.Levels = [
   },
 
   { colors: Breakout.Colors.hf,
-    name: "Galaga",
+    name: "Galaga by xadamxk",
     bricks: [
       "     jJj    jJj    jJj        ",
       "    jJfjJ  jJfjJ  jJfjJ       ",
@@ -138,6 +138,34 @@ Breakout.Levels = [
       "nNnNedDdDdDdDdDdDdDdDdDdDenNnN",
       "nNnNeEeEeEeEeEeEeEeEeEeEeEnNnN",
       "                              "
+    ]
+  },
+
+  { colors: Breakout.Colors.hf,
+    name: "Omniscient by Nightmare",
+    bricks: [
+      "         eEeEeEeEeEeEe        ",
+      "         edDdDdDdDdDdeEeE     ",
+      "         edDoOodDoOdDdDe      ",
+      "       eEedoOoOoOoOoOode      ",
+      "       eEhHhHhHhohHhHhHeE     ",
+      "        edfFfFfhHhfFfFdhe     ",
+      "        ehHfFfFhHhfFfFhHe     ",
+      "       eEohHhHhHohHhHhHoe     ",
+      "       eoOoOoeEeEeoOoOoeE     ",
+      "       eoOoOeEeEeEeoOoOe      ",
+      "       eoOoOeoOoeEeoOoOe      ",
+      "       eEeEmeEeEeEeoOoe       ",
+      "        emeEeEeEeEmMeEeE      ",
+      "       eEmMmemMmMmMmemMe      ",
+      "      eEmMmeEmnNmMmeEmMeE     ",
+      "      emMmMemnNnNnmemMmMe     ",
+      "     eEmMmMemneEeEmemMmMe     ",
+      "     emMmMeEeEeEeEemMmMeE     ",
+      "     eoOmMeoOoOoOoemMmeE      ",
+      "    eEoOoOoOoOoOoeEoOoe       ",
+      "    eoOoOoeEeoOeoOoOoOe       ",
+      "    eoOeEeEoOoeoOoOoOeE       "
     ]
   }
 
