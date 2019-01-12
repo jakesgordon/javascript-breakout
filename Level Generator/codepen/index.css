@@ -1,0 +1,49 @@
+*
+  font-family sans-serif
+#palette
+  label
+    display inline-block
+    height 50px
+    width 50px
+    margin 5px
+    overflow hidden
+    border 2px solid black
+    cursor pointer
+    color transparent
+    colours = #eee #00B500 #FF2121 #4d2f5d #333333 #1F1F1F #ffcc00 #0066ff #afaaaa #ed1c24 #00cc66 #99ccff #aa00ff #2D7E52 #9999FF
+    for colour, i in colours
+      &:nth-of-type({i+1})
+        background-color colour
+#calendar
+  font-size 0
+  margin 0 0 10px 0
+  cursor crosshair
+  user-select none
+  -webkit-user-select none
+  -moz-user-select none
+  > ul
+    padding 0
+    margin 0
+    > li
+      overflow hidden
+      display inline-block
+      width 13px
+      height 300px
+      margin 0
+      > ul
+        padding 0
+        margin 0
+        > li
+          border 1px solid white
+          display inline-block
+          width 11px
+          height 11px
+          overflow hidden
+          background-color #eee
+textarea
+  font-family monospace
+  font-size 10px
+  display block
+  width 600px
+  height 120px
+  margin 0 0 10px 0
