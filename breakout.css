@@ -6,7 +6,7 @@ body {
         font: 12pt Arial, Helvetica, sans-serif;
      padding: 0;
       margin: 0;
-  background: url(images/paving.jpg);
+  background: #0e0e0e;
 }
 
 /**************************/
@@ -25,14 +25,14 @@ body {
      position: absolute;
          left: 10px;
           top: 10px;
-        color: #666;
+        color: #949494;
   line-height: 20px;
 }
 
 #levels #next  { position: absolute;            }
-#levels #prev  { position: absolute; top: 14px; }
-#levels #label { padding-left: 20px; }
-#levels #level { font-size: 14pt; padding-left: 5px; font-weight: bold; color: black; }
+#levels #prev  { position: absolute; top: 50px; }
+#levels #label { padding-left: 40px; padding-top: 10px; display: block;}
+#levels #level { font-size: 14pt; display: block; padding-top: 30px; padding-left: 12px; font-weight: bold; color: #EFD279;}
 
 #levels img                 { cursor: pointer; }
 #levels img.disabled        { opacity: 0.3; cursor: default; }
