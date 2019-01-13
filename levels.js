@@ -36,7 +36,7 @@ Breakout.Levels = [
       "  cm  mc  cccc   cc  cm  mc   ",
       "  cm  mc cm  mc cmmc cm mc    ",
       "  cccCCC cm  mc c    cmmc     ",
-      "  cmMmMc cccCCC c    ccc      ",
+      "  cMMMMc cccCCC c    ccc      ",
       "  cm  mc cmmMMc c    cmmc     ",
       "  cm  mc cm  mc cmmc cm mc    ",
       "  cm  mc cm  mc  cc  cm  mc   ",
