@@ -613,7 +613,6 @@ Game = {
 
     resize: function() {
       if ((this.width != this.canvas.offsetWidth) || (this.height != this.front.offsetHeight)) {
-        // console.log("CANVAS RESIZED " + this.front.offsetWidth + ", " + this.front.offsetHeight);
         this.width  = this.front.width  = this.front.offsetWidth;
         this.height = this.front.height = this.front.offsetHeight;
         if (this.game && this.game.onresize)

@@ -68,7 +68,7 @@ Breakout = {
     powerup: {
       droprate: {
         low: 0,
-        high: 3,
+        high: 24,
         goal: 0
       }
     },
@@ -214,7 +214,6 @@ Breakout = {
     this.score.increase(brick.score);
     this.ball.speed += 10 * (1 - (this.ball.speed / this.ball.maxspeed)); // decay curve - speed increases less the faster the ball is (otherwise game becomes impossible)
     if (this.court.empty()) {
-      console.log("LEVEL WON");
       this.winLevel();
     }
   },
@@ -234,7 +233,7 @@ Breakout = {
   prevLevel: function (force) { if (force || this.canPrevLevel()) this.setLevel(this.level - 1); },
   nextLevel: function (force) { if (force || this.canNextLevel()) this.setLevel(this.level + 1); },
   determineLevelName: function () {
-    if (this.level === undefined) {
+    if (this.level) {
       this.setLevelName(Breakout.Levels[this.storage.level].name);
     } else {
       this.setLevelName(Breakout.Levels[this.level].name);
@@ -333,18 +332,20 @@ Breakout = {
     givePowerup: function () {
       var powerup = Game.randomChoice(this.powerups.list);
       if (powerup.enabled && !powerup.used) {
-        console.log(powerup.name + ": " + powerup.description);
+        document.getElementById('powerups').innerHTML = powerup.name + ": " + powerup.description;
         powerup.funct(this.paddle, this.score);
         powerup.used = true;
       }
     },
     resetPowerup: function (powerup) { powerup.used = false; },
     resetPowerups: function () {
-      //this.powerups.list.forEach(this.resetPowerup);
+      this.powerups.list.forEach(this.resetPowerup);
       // Reset paddle changes
       Breakout.Defaults.paddle.width = Breakout.Defaults.paddle.defaultWidth;
       this.paddle.reset();
       this.paddle.setpos((this.game.width / 2) - Breakout.Defaults.paddle.width, this.paddle.y);
+      // Clear alert
+      document.getElementById('powerups').innerHTML = "";
 
     }
   },
@@ -415,6 +416,7 @@ Breakout = {
 
       ctx.fillStyle = ishigh ? this.game.color.score : this.game.color.highscore;
       text = "HIGH SCORE: " + this.format(ishigh ? this.score : this.highscore);
+      // TODO: Logic for last digit check
       ctx.font = this.highfont;
       width = ctx.measureText(text).width;
       ctx.fillText(text, this.width - width, this.height / 2);
