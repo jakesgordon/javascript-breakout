@@ -201,6 +201,33 @@ Breakout.Levels = [
       "   diId                dgGd   ",
       "    dD                  dD    "
     ]
+  },
+
+  {
+    colors: Breakout.Colors.hf,
+    name: "TEST",
+    bricks: [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "DDDDDDDDDDDDDDDddddddddddddddd"
+    ]
   }
 
 ];
