@@ -32,7 +32,7 @@ body {
 
 #levels #next  { position: absolute; }
 #levels #prev  { position: absolute; top: 50px; }
-#levels #labelDiv {width: 100%; text-align: center; display: block; font-size: 22pt; color: #99ccff; }
+#levels #labelDiv {width: 100%; text-align: center; display: block; font-size: 22pt; color: #94c6ff; }
 #levels #label { width: 100%; text-align: center; margin-left: 30px; }
 #levels #level { font-size: 14pt; display: block; padding-top: 10px; padding-left: 12px; font-weight: bold; color: #EFD279; text-align: left;}
 
@@ -40,6 +40,9 @@ body {
 #levels img.disabled        { opacity: 0.3; cursor: default; }
 #levels img:active          { margin-top: 1px; margin-left: 1px; }
 #levels img.disabled:active { margin-top: 0; margin-left: 0; }
+
+#controls { width: 100%; }
+#powerups { font-size: 18pt; text-align: center; color: #ff9894;  }
 
 #instructions {
   background: #DDD;
