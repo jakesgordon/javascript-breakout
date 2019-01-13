@@ -65,6 +65,14 @@ Breakout = {
       ]
     },
 
+    powerup: {
+      droprate: {
+        low: 0,
+        high: 3,
+        goal: 0
+      }
+    },
+
     keys: [
       { keys: [Game.KEY.LEFT, Game.KEY.A], mode: 'down', action: function () { this.paddle.moveLeft(); } },
       { keys: [Game.KEY.RIGHT, Game.KEY.D], mode: 'down', action: function () { this.paddle.moveRight(); } },
@@ -102,7 +110,11 @@ Breakout = {
     this.paddle = Object.construct(Breakout.Paddle, this, cfg.paddle);
     this.ball = Object.construct(Breakout.Ball, this, cfg.ball);
     this.score = Object.construct(Breakout.Score, this, cfg.score);
-    this.powerup = Object.construct(Breakout.Powerups, this, cfg, this.ball, this.paddle, cfg.powerups);
+    this.powerup = Object.construct(Breakout.Powerups, this, cfg, 
+      this.ball, 
+      this.paddle, 
+      this.score,
+      cfg.powerups);
     Game.loadSounds({ sounds: cfg.sounds });
   },
 
@@ -196,9 +208,7 @@ Breakout = {
   },
 
   hitBrick: function (brick) {
-    // ADAM
     this.powerup.checkForPowerup();
-
     this.playSound('brick');
     this.court.remove(brick);
     this.score.increase(brick.score);
@@ -211,11 +221,11 @@ Breakout = {
 
   resetLevel: function () { this.setLevel(); },
   setLevel: function (level) {
-    this.determineLevelName();
     level = (typeof level == 'undefined') ? (this.storage.level ? parseInt(this.storage.level) : 0) : level;
     level = level < Breakout.Levels.length ? level : 0;
     this.court.reset(level);
     this.storage.level = this.level = level;
+    this.determineLevelName();
     this.refreshDOM();
   },
 
@@ -266,89 +276,77 @@ Breakout = {
 
   Powerups: {
 
-    droprate: {
-      low: 0,
-      high: 9
-    },
-
     powerups: {
-      description: "Powerups have a 10% droprate when destroying blocks and offer several perks.",
+      description: "Powerups have a 4% droprate when destroying blocks and offer several perks.",
       list: [
         {
           name: 'BigPaddle',
+          enabled: true,
           used: false,
           description: 'Makes your paddle large',
-          funct: function (paddle) {
-            console.log(this.name + ": " + this.description);
-            // TODO: FIX BUG
-            if (!this.used){
-              this.used = true;
-              // Set new paddle length
-              var posX = paddle.x - (Breakout.Defaults.paddle.defaultWidth/2);
-              var posY = paddle.y;
-              Breakout.Defaults.paddle.width = Breakout.Defaults.paddle.defaultWidth * 2;
-              paddle.reset();
-              paddle.setpos(posX, posY);
-            } else {
-              console.log(this.name + " already used: respinning!");
-              // TODO: Call givePowerUp
-              //this.Powerups.givePowerup();
-            }
-            
+          funct: function (paddle, score) {
+            var posX = paddle.x - (Breakout.Defaults.paddle.defaultWidth / 2);
+            var posY = paddle.y;
+            Breakout.Defaults.paddle.width = Breakout.Defaults.paddle.defaultWidth * 2;
+            paddle.reset();
+            paddle.setpos(posX, posY);
+
           }
         },
         {
           name: 'SmallPaddle',
-          used: true,
+          used: false,
+          enabled: false,
           description: 'Makes your paddle small',
-          funct: function (paddle) { 
-            console.log(this.name + ": " + this.description);
-            if (!this.used){
-              this.used = true;
-              // Set new paddle length
-              paddle.resize(paddle.x+Breakout.Defaults.paddle.defaultWidth, paddle.y);
-            } else {
-              console.log(this.name + " already used: respinning!");
-              // TODO: Call givePowerUp
-              //this.Powerups.givePowerup();
-            }
-           }
+          funct: function (paddle, score) {
+            var posX = paddle.x + (Breakout.Defaults.paddle.defaultWidth / 2);
+            var posY = paddle.y;
+            Breakout.Defaults.paddle.width = Breakout.Defaults.paddle.defaultWidth / 2;
+            paddle.reset();
+            paddle.setpos(posX, posY);
+          }
         },
         {
           name: 'ExtraLife',
           used: false,
+          enabled: true,
           description: 'Gives you an extra life',
-          funct: function () { console.log("Powerup 3"); }
+          funct: function (paddle, score) {
+            score.gainLife();
+          }
         }
       ]
     },
 
-    initialize: function (game, cfg, ball, paddle) {
+    initialize: function (game, cfg, ball, paddle, score) {
       this.game = game;
       this.cfg = cfg;
       this.ball = ball;
       this.paddle = paddle;
+      this.score = score;
     },
 
-    checkForPowerup: function () { if (Math.random() * Game.random(this.droprate.low, this.droprate.high) > this.droprate.low) this.givePowerup(); },
-    givePowerup: function () { /*Game.randomChoice(this.powerups.list).funct(this.paddle);*/ this.test() },
-    test: function () {
-      this.powerups.list[0].funct(this.paddle);
+    checkForPowerup: function () {
+      if (Math.round(Game.randomInt(Breakout.Defaults.powerup.droprate.low, Breakout.Defaults.powerup.droprate.high)) == 
+      Breakout.Defaults.powerup.droprate.goal) this.givePowerup();
     },
+    givePowerup: function () {
+      var powerup = Game.randomChoice(this.powerups.list);
+      if (powerup.enabled && !powerup.used) {
+        console.log(powerup.name + ": " + powerup.description);
+        powerup.funct(this.paddle, this.score);
+        powerup.used = true;
+      }
+    },
+    resetPowerup: function (powerup) { powerup.used = false; },
     resetPowerups: function () {
-      console.log(this.powerups.list);
-      this.powerups.list.forEach(this.resetPowerup);
-      console.log(this.powerups.list);
+      //this.powerups.list.forEach(this.resetPowerup);
+      // Reset paddle changes
       Breakout.Defaults.paddle.width = Breakout.Defaults.paddle.defaultWidth;
       this.paddle.reset();
-      console.log(this);
-      this.paddle.reset();
-      this.paddle.setpos((this.game.width/2)-Breakout.Defaults.paddle.width, this.paddle.y);
-      // this.paddle.reset();
+      this.paddle.setpos((this.game.width / 2) - Breakout.Defaults.paddle.width, this.paddle.y);
 
-    },
-    resetPowerup: function (powerup) { powerup.used = false; }
-
+    }
   },
 
   //=============================================================================
@@ -741,17 +739,17 @@ Breakout = {
       this.h = this.cfg.height * this.game.court.chunk;
       this.minX = this.game.court.left;
       this.maxX = this.game.court.right - this.w;
-      this.setpos((this.game.width/2)-Breakout.Defaults.paddle.width, this.game.court.bottom - this.h);
+      this.setpos((this.game.width / 2) - Breakout.Defaults.paddle.width, this.game.court.bottom - this.h);
       this.setdir(0);
       this.rerender = true;
     },
 
-    resize: function (x,y) {
+    resize: function (x, y) {
       this.w = this.cfg.width * this.game.court.chunk;
       this.h = this.cfg.height * this.game.court.chunk;
       this.minX = this.game.court.left;
       this.maxX = this.game.court.right - this.w;
-      this.setpos(x,y)
+      this.setpos(x, y)
     },
 
     setpos: function (x, y) {
