@@ -199,9 +199,7 @@ Breakout = {
 
   resetLevel: function() { this.setLevel(); },
   setLevel: function(level) {
-    // ADAM
     this.determineLevelName(level);
-    console.log(this.getLevelName());
     level = (typeof level == 'undefined') ? (this.storage.level ? parseInt(this.storage.level) : 0) : level;
     level = level < Breakout.Levels.length ? level : 0;
     this.court.reset(level);
